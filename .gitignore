@@ -1,2 +1,8 @@
 *pyc
 .projectile
+basic-auth.json
+*.org
+build
+dist
+snowclient.egg-info
+tests/integration.py
