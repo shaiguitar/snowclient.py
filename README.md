@@ -37,12 +37,8 @@ def build_query():
 shai@adsk-lappy ~   % pip3.4 install snowclient
 Collecting snowclient
   Downloading snowclient-0.3.1.tar.gz
-Requirement already satisfied (use --upgrade to upgrade): nose in /usr/local/lib/python3.4/site-packages (from snowclient)
-Requirement already satisfied (use --upgrade to upgrade): requests in /usr/local/lib/python3.4/site-packages/requests-2.8.1-py3.4.egg (from snowclient)
-Requirement already satisfied (use --upgrade to upgrade): responses in ./src/repos-random/responses (from snowclient)
-Requirement already satisfied (use --upgrade to upgrade): cookies in /usr/local/lib/python3.4/site-packages/cookies-2.2.1-py3.4.egg (from responses->snowclient)
-Requirement already satisfied (use --upgrade to upgrade): six in /usr/local/lib/python3.4/site-packages (from responses->snowclient)
-Installing collected packages: snowclient
+  ...
+  ...
   Running setup.py install for snowclient
 Successfully installed snowclient-0.3.1
 ```
