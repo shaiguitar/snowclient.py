@@ -5,4 +5,5 @@ basic-auth.json
 build
 dist
 snowclient.egg-info
-tests/integration.py
+.noseids
+tests/integration_tests.py
