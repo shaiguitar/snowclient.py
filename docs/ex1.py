@@ -27,25 +27,28 @@ pp = pprint.PrettyPrinter(indent=4)
 recent_incidents = client.list("incident", sysparm_limit=1000, sysparm_query=build_query())
 
 pp.pprint("dates of incidents found:")
-pp.pprint(map(lambda x: x.sys_created_on, recent_incidents))
+pp.pprint(list(map(lambda x: x.sys_created_on, recent_incidents)))
 
 a_record = random.choice(recent_incidents)
 a_record_attrs = a_record.__dict__
 
 # do things with ze data
-print "this recored has " + str(len(a_record_attrs)) + " attributes/fields."
-print "for example:"
-print "============"
-print
-for an_attr, a_val in a_record_attrs.items():
-    if a_val and isinstance(a_val, basestring):
-        print an_attr + " is " + a_val
+print("this recored has %s attributes/fields." % len(a_record_attrs))
+print("for example:")
+print("============")
+print()
 
-# you can dereference embeded <link> results
-# this doesn't recurse, just goes one level deep
-# and replaces the <link> with a new snow_record.
-print "deferencing links from record..."
-client.resolve_links(a_record)
-
-# linked objects will show up as their own records.
-print a_record
+# eg
+#
+#  for an_attr, a_val in a_record_attrs.items():
+#      if a_val and isinstance(a_val, str):
+#          print("%s is %s" % [a_val, an_attr])
+#
+#  # you can dereference embeded <link> results
+#  # this doesn't recurse, just goes one level deep
+#  # and replaces the <link> with a new snow_record.
+#  print("deferencing links from record...")
+#  client.resolve_links(a_record)
+#
+#  # linked objects will show up as their own records.
+#  print(a_record)

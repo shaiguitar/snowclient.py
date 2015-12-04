@@ -16,7 +16,7 @@ the nastiness of the original syntax necessary. See QueryBuilder tests for it's 
 
 # Example
 
-See the docs dir. An example:
+See an [example](docs/ex1.py) in the docs dir. tl;dr -
 
 ```python
   # re-tailor for your own uses (tablename here is 'incident', base url, auth, etc)

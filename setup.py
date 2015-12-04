@@ -16,6 +16,7 @@ config = {
     'author_email': 'shaiguitar@gmail.com',
     'version': version,
     'install_requires': ['nose', 'requests', 'responses'],
+    'package_data': {'': ['VERSION']},
     'packages': ['snowclient'],
     'scripts': [],
     'name': 'snowclient'

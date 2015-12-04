@@ -1,4 +1,4 @@
-shai@lappy ~/p/monitors/py-snow [master] ± % python docs/ex1.py
+shai@lappy [master] ± % DEBUG=1 python3.4 ex1.py
 'dates of incidents found:'
 [   u'2015-11-21 07:49:32',
     u'2015-11-21 07:41:46',
