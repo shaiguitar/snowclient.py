@@ -5,7 +5,8 @@ Api client for the [docs table api](http://wiki.servicenow.com/index.php?title=T
 # Install
 
 ```
-    # python3.4 setup.py install
+$ python3.4 setup.py install
+# todo soon http://peterdowns.com/posts/first-time-with-pypi.html
 ```
 # Setup
 
@@ -22,6 +23,8 @@ See an [example](docs/ex1.py) in the docs dir. tl;dr -
   # re-tailor for your own uses (tablename here is 'incident', base url, auth, etc)
   client = Client("https://your-sandbox.service-now.com", user, password)
   recent_incidents = client.list("incident", sysparm_limit=1000, sysparm_query=build_query())
+  i = recent_incidents[0]
+  i.u_custom_field # returns custom value
 ```
 
 You'll probably want to use the querybuilder to avoid having to do this yourself.
