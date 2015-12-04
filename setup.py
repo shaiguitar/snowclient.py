@@ -12,11 +12,11 @@ config = {
     'description': 'snow',
     'author': 'shai rosenfeld',
     'url': 'github',
-    'download_url': 'github',
+    'download_url': 'https://github.com/shaiguitar/snowclient.py',
     'author_email': 'shaiguitar@gmail.com',
     'version': version,
     'install_requires': ['nose', 'requests', 'responses'],
-    'package_data': {'': ['VERSION']},
+    'package_data': {'': ['VERSION','LICENSE.txt']},
     'packages': ['snowclient'],
     'scripts': [],
     'name': 'snowclient'

@@ -2,20 +2,7 @@
 
 Api client for the [docs table api](http://wiki.servicenow.com/index.php?title=Table_API#POST_.2Fapi.2Fnow.2Fv1.2Ftable.2F.28tableName.29&gsc.tab=0).
 
-# Install
-
-```
-$ python3.4 setup.py install
-# todo soon http://peterdowns.com/posts/first-time-with-pypi.html
-```
-# Setup
-
-Use something like "~/.snow-auth.json", either way load up basic auth and use `Client()` class
-to start hacking away. Or you can just pass it in.
-You'll also want/need to use the `QueryBuilder` to abstract away some of
-the nastiness of the original syntax necessary. See QueryBuilder tests for it's usage.
-
-# Example
+# Usage
 
 See an [example](docs/ex1.py) in the docs dir. tl;dr -
 
@@ -42,6 +29,36 @@ def build_query():
     #
     # sysparm_query=sys_created_onBETWEENjavascript:gs.dateGenerate('2013-12-31','00:00:00')@javascript:gs.dateGenerate('2014-01-01','00:00:00')^ORDERBYDESCsys_created_on
 ```
+
+
+# Install
+
+```
+shai@adsk-lappy ~   % pip3.4 install snowclient
+Collecting snowclient
+  Downloading snowclient-0.3.1.tar.gz
+Requirement already satisfied (use --upgrade to upgrade): nose in /usr/local/lib/python3.4/site-packages (from snowclient)
+Requirement already satisfied (use --upgrade to upgrade): requests in /usr/local/lib/python3.4/site-packages/requests-2.8.1-py3.4.egg (from snowclient)
+Requirement already satisfied (use --upgrade to upgrade): responses in ./src/repos-random/responses (from snowclient)
+Requirement already satisfied (use --upgrade to upgrade): cookies in /usr/local/lib/python3.4/site-packages/cookies-2.2.1-py3.4.egg (from responses->snowclient)
+Requirement already satisfied (use --upgrade to upgrade): six in /usr/local/lib/python3.4/site-packages (from responses->snowclient)
+Installing collected packages: snowclient
+  Running setup.py install for snowclient
+Successfully installed snowclient-0.3.1
+```
+
+# Releasing
+
+Per http://peterdowns.com/posts/first-time-with-pypi.html (depends on `~/.pypirc` file).
+
+It's at https://pypi.python.org/pypi?:action=display&name=snowclient&version=0.3.1
+
+# Setup
+
+Use something like "~/.snow-auth.json", either way load up basic auth and use `Client()` class
+to start hacking away. Or you can just pass it in.
+You'll also want/need to use the `QueryBuilder` to abstract away some of
+the nastiness of the original syntax necessary. See QueryBuilder tests for it's usage.
 
 # Tests
 
