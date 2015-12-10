@@ -1,6 +1,7 @@
 from nose.tools import *
 from snowclient.client import Client
 from snowclient.querybuilder import QueryBuilder
+from snowclient.errors import SnowError
 import os
 import json
 import unittest
@@ -70,6 +71,13 @@ class TestClient(unittest.TestCase):
     assert_equal(record.linked_obj.test_key_linked, "test_val_linked")
     assert_equal(record.linked_obj.table_name(), "linked_table")
 
+  @responses.activate
+  def test_record_not_found(self):
+    try:
+        record = self.client.list("not_found")
+    except SnowError as e:
+      assert_equal(e.msg, "No Record found")
+
   def _setup_mocking(self):
     # with ID's
     #
@@ -80,13 +88,14 @@ class TestClient(unittest.TestCase):
     #
     re_lst_original = re.compile(r'https?://booboo.service-now.com/api/now/v1/table/original_table.*')
     re_lst_linked = re.compile(r'https?://booboo.service-now.com/api/now/v1/table/linked_table.*')
-
-#    original_json, linked_json = None, None
+    re_lst_not_found = re.compile(r'https?://booboo.service-now.com/api/now/v1/table/not_found.*')
 
     with open(os.path.join(self.curr_dir, "support/", 'original_table.json')) as data_file:
       original_json = data_file.read()
     with open(os.path.join(self.curr_dir, "support/", 'linked_table.json')) as data_file:
       linked_json = data_file.read()
+    with open(os.path.join(self.curr_dir, "support/", 'error_not_found.json')) as data_file:
+      not_found_json = data_file.read()
 
     responses.add(responses.GET, re_lst_original,
                   body=original_json,
@@ -98,12 +107,7 @@ class TestClient(unittest.TestCase):
                   status=200,
                   content_type='application/json')
 
-
-
-
-
-
-
-
-
-
+    responses.add(responses.GET, re_lst_not_found,
+                  body=not_found_json,
+                  status=200,
+                  content_type='application/json')

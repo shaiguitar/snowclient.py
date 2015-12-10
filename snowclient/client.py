@@ -1,7 +1,4 @@
-import json
-import requests
-import logging
-import os
+from snowclient.errors import SnowError
 
 from snowclient.api import Api
 from snowclient.snowrecord import SnowRecord
@@ -17,8 +14,13 @@ class Client:
         """
         result = self.api.list(table, **kparams)
         records = []
-        for elem in result['result']:
-            records.append(SnowRecord(table, **elem))
+        if self.is_not_error(result):
+            for elem in result["result"]:
+                records.append(SnowRecord(table, **elem))
+        else:
+            msg = result["error"]["message"]
+            detail = result["error"]["detail"]
+            raise SnowError(msg, detail)
         return records
 
     def get(self,table, sys_id):
@@ -27,7 +29,11 @@ class Client:
         returns a SnowRecord obj.
         """
         result = self.api.get(table, sys_id)
-        return SnowRecord(table, **result['result'])
+        if self.is_error(result):
+            msg = result["error"]["message"]
+            detail = result["error"]["detail"]
+            raise SnowError(msg, detail)
+        return SnowRecord(table, **result["result"])
 
     def resolve_links(self, snow_record):
         """
@@ -48,9 +54,11 @@ class Client:
                 if "result" in replace_dict[key]["json"]:
                     data = replace_dict[key]["json"]["result"]
                 else:
-                    # raise BAD RESPONSE (?)
-                    data = replace_dict[key]["json"]
-                setattr(snow_record, key, SnowRecord(replace_dict[key]["tablename"], **data))
+                    # FIXME better
+                    raise SnowError("Could not resolve links",
+                                    [replace_dict, self])
+                setattr(snow_record, key,
+                        SnowRecord(replace_dict[key]["tablename"], **data))
         return snow_record
 
     def tablename_from_link(self, link):
@@ -61,3 +69,14 @@ class Client:
         i = arr.index("table")
         tn = arr[i+1]
         return tn
+
+    def is_error(self, res):
+        if "error" in res:
+            return True
+        elif "result" in res:
+            return False
+        else:
+            raise "parsing the service now responses is hard."
+
+    def is_not_error(self, res):
+        return not self.is_error(res)

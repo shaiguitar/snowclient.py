@@ -1,0 +1,7 @@
+{
+  "error": {
+    "message": "No Record found",
+    "detail": "Records matching query not found. Check query parameter or offset parameter"
+  },
+  "status": "failure"
+}
