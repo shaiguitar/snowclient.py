@@ -14,13 +14,12 @@ class Client:
         """
         result = self.api.list(table, **kparams)
         records = []
-        if self.is_not_error(result):
-            for elem in result["result"]:
-                records.append(SnowRecord(table, **elem))
-        else:
+        if self.is_error(result):
             msg = result["error"]["message"]
             detail = result["error"]["detail"]
             raise SnowError(msg, detail)
+        for elem in result["result"]:
+            records.append(SnowRecord(table, **elem))
         return records
 
     def get(self,table, sys_id):
@@ -43,7 +42,6 @@ class Client:
         replace_dict = {}
         for key, value in snow_record.__dict__.items():
             if isinstance(value, dict) and value['link']:
-                # sys_id = value['value']
                 link = value['link']
                 linked_response = self.api.req("get", link)
                 replace_dict[key] = {"json": linked_response.json(),
