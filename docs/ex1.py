@@ -3,8 +3,9 @@ import json
 import random
 import datetime
 import pprint
-from snowclient.client import *
-from snowclient.querybuilder import *
+from snowclient.client import Client
+from snowclient.querybuilder import QueryBuilder
+
 
 def build_query():
     qb = QueryBuilder()
