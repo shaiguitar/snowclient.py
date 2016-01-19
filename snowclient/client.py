@@ -74,7 +74,7 @@ class Client:
         else:
             # FIXME better
             raise SnowError("Could not resolve link",
-                            [replace_dict, self])
+                            [replacement_info, self])
         setattr(snow_record, field_to_resolve,
                 SnowRecord(replacement_info["tablename"], **data))
         return snow_record
