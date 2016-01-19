@@ -72,6 +72,17 @@ class TestClient(unittest.TestCase):
     assert_equal(record.linked_obj.table_name(), "linked_table")
 
   @responses.activate
+  def test_traversing_link(self):
+    record = self.client.list("original_table")[0]
+
+    assert_equal(record.test_key_orig, "test_val_orig")
+    assert(not hasattr(record, "test_key_linked"))
+    self.client.resolve_link(record, "linked_obj") # pass specific field to "resolve"
+    assert_equal(record.test_key_orig, "test_val_orig")
+    assert_equal(record.linked_obj.test_key_linked, "test_val_linked")
+    assert_equal(record.linked_obj.table_name(), "linked_table")
+
+  @responses.activate
   def test_record_not_found(self):
     try:
         record = self.client.list("not_found")

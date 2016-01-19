@@ -59,6 +59,26 @@ class Client:
                         SnowRecord(replace_dict[key]["tablename"], **data))
         return snow_record
 
+    def resolve_link(self, snow_record, field_to_resolve):
+        """
+        Assoc the new thing in as a replacement
+        for the original <link> value in the field specified.
+        The replacement is a SnowRecord.
+        """
+        link = getattr(snow_record, field_to_resolve)['link']
+        linked_response = self.api.req("get", link)
+        replacement_info = {"json": linked_response.json(),
+                                "tablename": self.tablename_from_link(link) }
+        if "result" in replacement_info["json"]:
+            data = replacement_info["json"]["result"]
+        else:
+            # FIXME better
+            raise SnowError("Could not resolve link",
+                            [replace_dict, self])
+        setattr(snow_record, field_to_resolve,
+                SnowRecord(replacement_info["tablename"], **data))
+        return snow_record
+
     def tablename_from_link(self, link):
         """
         Helper method for URL's that look like /api/now/v1/table/FOO/sys_id etc.
