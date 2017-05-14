@@ -15,7 +15,7 @@ config = {
     'download_url': 'https://github.com/shaiguitar/snowclient.py',
     'author_email': 'shaiguitar@gmail.com',
     'version': version,
-    'install_requires': ['nose', 'requests', 'responses'],
+    'install_requires': ['nose', 'requests', 'responses', 'backoff'],
     'package_data': {'': ['VERSION','LICENSE.txt']},
     'packages': ['snowclient'],
     'scripts': [],

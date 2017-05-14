@@ -62,25 +62,29 @@ class TestClient(unittest.TestCase):
 
   @responses.activate
   def test_traversing_links(self):
-    record = self.client.list("original_table")[0]
+    orig_record = self.client.list("original_table")[0]
+    assert_equal(orig_record.test_key_orig, "test_val_orig")
 
-    assert_equal(record.test_key_orig, "test_val_orig")
-    assert(not hasattr(record, "test_key_linked"))
-    self.client.resolve_links(record)
-    assert_equal(record.test_key_orig, "test_val_orig")
-    assert_equal(record.linked_obj.test_key_linked, "test_val_linked")
-    assert_equal(record.linked_obj.table_name(), "linked_table")
+    # get links, assert against those.
+    linked_record = self.client.resolve_links(orig_record)[0]
+    # no mutation
+    assert_equal(orig_record.test_key_orig, "test_val_orig")
+
+    assert_equal(linked_record.test_key_linked, "test_val_linked")
+    assert_equal(linked_record._table_name, "linked_table")
 
   @responses.activate
   def test_traversing_link(self):
-    record = self.client.list("original_table")[0]
+    orig_record = self.client.list("original_table")[0]
 
-    assert_equal(record.test_key_orig, "test_val_orig")
-    assert(not hasattr(record, "test_key_linked"))
-    self.client.resolve_link(record, "linked_obj") # pass specific field to "resolve"
-    assert_equal(record.test_key_orig, "test_val_orig")
-    assert_equal(record.linked_obj.test_key_linked, "test_val_linked")
-    assert_equal(record.linked_obj.table_name(), "linked_table")
+    # get links, assert against those.
+    linked_record = self.client.resolve_link(orig_record, "linked_obj")
+
+    # no mutation
+    assert_equal(orig_record.test_key_orig, "test_val_orig")
+
+    assert_equal(linked_record.test_key_linked, "test_val_linked")
+    assert_equal(linked_record._table_name, "linked_table")
 
   @responses.activate
   def test_record_not_found(self):

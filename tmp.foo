@@ -1,0 +1,36 @@
+# Admin on dev:
+
+https://autodeskcloudopsdev.service-now.com/sys_db_object.do?WSDL
+
+# Have REST explorer access on prod:
+
+https://autodeskcloudops.service-now.com/nav_to.do?uri=%2F$restapi.do ( nav bar ).
+
+# List of tables:
+
+https://autodeskcloudopsdev.service-now.com/sys_db_object_list.do?sysparm_userpref_module=7e7ca89ac0a8000901594ba32f405461&sysparm_query=sys_update_nameISNOTEMPTY^EQ&sysparm_clear_stack=true&sysparm_clear_stack=true&sysparm_clear_stack=true
+
+# Service Monikers:
+
+sc_req_item
+
+# list out a graph:
+
+use sysparm_id and tablename as identifiers and then link them via dict
+http://www.python-course.eu/graphs_python.php
+ie:
+
+a -> b,c
+b -> a
+c -> e
+
+so get a bunch of resources, start with whatever table, crawl with sysparm_limit 
+and make way to other tables and index a graph dict with the (sysparm_id,table_name) as identifiers.
+create this graph and display it.
+
+start off with an incident, and graph what connections are related to ONE incident.
+
+# FODE
+
+pyMC at it or tensorflow (more ML/AI analyze graph info).
+https://graph-tool.skewed.de/
