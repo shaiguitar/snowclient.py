@@ -1,13 +1,34 @@
 import json
 import requests
+import backoff
 import logging
 import os
+
+# LOGGER ... move away from api.
+if "DEBUG" in os.environ or "SNOW_DEBUG" in os.environ:
+    try:
+        # requests pacakge d
+        import http.client as http_client
+    except ImportError:
+        # Python 2
+        import httplib as http_client
+    http_client.HTTPConnection.debuglevel = 1
+
+    # You must initialize logging, otherwise you'll not see debug output.
+    # this will work only if os.environ is set appropriately...
+
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+    requests_log = logging.getLogger("requests.packages.urllib3")
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
 
 class Api:
     def __init__(self, base_url, username, password):
         self.base_url = base_url
         self.__username = username
         self.__password = password
+        self.logger = logging.getLogger(__name__)
 
     def list(self,table, **kparams):
         """
@@ -25,6 +46,23 @@ class Api:
         res = self.table_api_get(table, sys_id)
         return res
 
+    #def fatal_code(e):
+    #    return 400 <= e.response.status_code < 500
+
+    # backoff/retries built in.
+    @backoff.on_exception(backoff.expo,
+                      requests.exceptions.RequestException,
+                      max_tries=8)
+                      # giveup=fatal_code)
+    def req(self, meth, url):
+        """
+        sugar that wraps the 'requests' module with basic auth and some headers.
+        """
+        req_method = getattr(requests, meth)
+        return (req_method(url,
+                         auth=(self.__username, self.__password),
+                         headers=({'user-agent': self.user_agent(), 'Accept': 'application/json'})))
+
     def user_agent(self):
         """
         its a user agent string!
@@ -36,21 +74,17 @@ class Api:
 
         return "Python Snow Api Client (Version %s)" % version
 
-    def req(self, meth, url):
-        """
-        sugar that wraps the 'requests' module with basic auth and some headers.
-        """
-        req_method = getattr(requests, meth)
-        return (req_method(url,
-                         auth=(self.__username, self.__password),
-                         headers=({'user-agent': self.user_agent(), 'Accept': 'application/json'})))
-
     # HELPER, with auth+json/less boilerplate
     def table_api_get(self, *paths, **kparams):
         """
         helper to make GET /api/now/v1/table requests
         """
-        return json.loads(self.req("get", self.url_for_table_api(*paths, **kparams)).text)
+        url = self.url_for_table_api(*paths, **kparams)
+        rjson = self.req("get", url).text
+
+        self.logger.debug("GET json resonse: %s %s" % (url, rjson))
+
+        return json.loads(rjson)
 
     # HELPER, url builder
     def url_for_table_api(self, *paths, **kparams):
@@ -66,21 +100,3 @@ class Api:
             # use %r in val?
             base += '&'.join("%s=%s" % (key,val) for (key,val) in kparams.items())
         return base
-
-# xxx move to some helper or something?
-if "DEBUG" in os.environ:
-    # requests pacakge d
-    try:
-        import http.client as http_client
-    except ImportError:
-        # Python 2
-        import httplib as http_client
-    http_client.HTTPConnection.debuglevel = 1
-
-    # You must initialize logging, otherwise you'll not see debug output.
-    logging.basicConfig()
-    logging.getLogger().setLevel(logging.DEBUG)
-    requests_log = logging.getLogger("requests.packages.urllib3")
-    requests_log.setLevel(logging.DEBUG)
-    requests_log.propagate = True
-

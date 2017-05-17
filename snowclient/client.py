@@ -19,7 +19,7 @@ class Client:
             detail = result["error"]["detail"]
             raise SnowError(msg, detail)
         for elem in result["result"]:
-            records.append(SnowRecord(table, **elem))
+            records.append(SnowRecord(self, table, **elem))
         return records
 
     def get(self,table, sys_id):
@@ -32,61 +32,39 @@ class Client:
             msg = result["error"]["message"]
             detail = result["error"]["detail"]
             raise SnowError(msg, detail)
-        return SnowRecord(table, **result["result"])
+        return SnowRecord(self, table, **result["result"])
 
     def resolve_links(self, snow_record):
         """
-        Finds any dict values that have 'link' in them, and assoc the new thing in as a replacement
-        for the original <link> value. The replacement is a SnowRecord
+        Get the infos from the links and return SnowRecords[].
         """
-        replace_dict = {}
-        for key, value in snow_record.__dict__.items():
-            if isinstance(value, dict) and value['link']:
-                link = value['link']
-                linked_response = self.api.req("get", link)
-                replace_dict[key] = {"json": linked_response.json(),
-                                     "tablename": self.tablename_from_link(link) }
-        for key, value in replace_dict.items():
-            if replace_dict[key]:
-                data = {}
-                if "result" in replace_dict[key]["json"]:
-                    data = replace_dict[key]["json"]["result"]
-                else:
-                    # FIXME better
-                    raise SnowError("Could not resolve links",
-                                    [replace_dict, self])
-                setattr(snow_record, key,
-                        SnowRecord(replace_dict[key]["tablename"], **data))
-        return snow_record
+        records = []
+        for attr, link in snow_record.links().items():
+            records.append(self.resolve_link(snow_record, attr))
+        return records
 
     def resolve_link(self, snow_record, field_to_resolve):
         """
-        Assoc the new thing in as a replacement
-        for the original <link> value in the field specified.
-        The replacement is a SnowRecord.
+        Get the info from the link and return a SnowRecord.
         """
-        link = getattr(snow_record, field_to_resolve)['link']
-        linked_response = self.api.req("get", link)
-        replacement_info = {"json": linked_response.json(),
-                                "tablename": self.tablename_from_link(link) }
-        if "result" in replacement_info["json"]:
-            data = replacement_info["json"]["result"]
-        else:
-            # FIXME better
-            raise SnowError("Could not resolve link",
-                            [replacement_info, self])
-        setattr(snow_record, field_to_resolve,
-                SnowRecord(replacement_info["tablename"], **data))
-        return snow_record
+        link = snow_record.links()[field_to_resolve]
 
-    def tablename_from_link(self, link):
-        """
-        Helper method for URL's that look like /api/now/v1/table/FOO/sys_id etc.
-        """
-        arr = link.split("/")
-        i = arr.index("table")
-        tn = arr[i+1]
-        return tn
+        linked_response = self.api.req("get", link) # rety here...
+
+        rjson = linked_response.json()
+        rtablename = SnowRecord.tablename_from_link(link)
+
+        # could do this, but better to not mutate:
+        # setattr(snow_record, field_to_resolve, linked)
+        #
+        # so just return new record. could infer
+
+        if "result" in rjson:
+            linked = SnowRecord(self, rtablename, **rjson["result"])
+        else:
+            linked = SnowRecord.NotFound(self, rtablename, "Could not resolve link %s" % link, [rjson, rtablename, link, self])
+
+        return linked
 
     def is_error(self, res):
         if "error" in res:
