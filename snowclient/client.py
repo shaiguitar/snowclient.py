@@ -1,7 +1,7 @@
 from snowclient.errors import SnowError
+from snowclient.snowrecord import SnowRecord
 
 from snowclient.api import Api
-from snowclient.snowrecord import SnowRecord
 
 class Client:
     def __init__(self, base_url, username, password):
@@ -12,14 +12,7 @@ class Client:
         get a collection of records by table name.
         returns a collection of SnowRecord obj.
         """
-        result = self.api.list(table, **kparams)
-        records = []
-        if self.is_error(result):
-            msg = result["error"]["message"]
-            detail = result["error"]["detail"]
-            raise SnowError(msg, detail)
-        for elem in result["result"]:
-            records.append(SnowRecord(self, table, **elem))
+        records = self.api.list(table, **kparams)
         return records
 
     def get(self,table, sys_id):
@@ -27,12 +20,8 @@ class Client:
         get a single record by table name and sys_id
         returns a SnowRecord obj.
         """
-        result = self.api.get(table, sys_id)
-        if self.is_error(result):
-            msg = result["error"]["message"]
-            detail = result["error"]["detail"]
-            raise SnowError(msg, detail)
-        return SnowRecord(self, table, **result["result"])
+        record = self.api.get(table, sys_id)
+        return record
 
     def resolve_links(self, snow_record):
         """
@@ -56,7 +45,6 @@ class Client:
 
         # could do this, but better to not mutate:
         # setattr(snow_record, field_to_resolve, linked)
-        #
         # so just return new record. could infer
 
         if "result" in rjson:
@@ -66,13 +54,3 @@ class Client:
 
         return linked
 
-    def is_error(self, res):
-        if "error" in res:
-            return True
-        elif "result" in res:
-            return False
-        else:
-            raise "parsing the service now responses is hard."
-
-    def is_not_error(self, res):
-        return not self.is_error(res)

@@ -19,9 +19,6 @@ from snowclient.client import Client
 from snowclient.client import SnowRecord
 from snowclient.querybuilder import QueryBuilder
 
-with open(os.path.join(os.path.expanduser("~"), ".snow-auth.json")) as data_file:
-    user, password = json.load(data_file)
-
 def recent_range():
     qb = QueryBuilder()
     start = datetime.strptime('2017-5-15 00:00:00', "%Y-%m-%d %H:%M:%S")
@@ -31,6 +28,8 @@ def recent_range():
     return qb.return_query
 
 # set up the client with the correct URL
+with open(os.path.join(os.path.expanduser("~"), ".snow-auth.json")) as data_file:
+    user, password = json.load(data_file)
 client = Client("https://autodeskcloudops.service-now.com", user, password)
 snow_record = client.list("incident", sysparm_limit=1, sysparm_query=recent_range())[0]
 debug("Sys id for incident: %s" % snow_record.sys_id)

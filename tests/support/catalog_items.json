@@ -1,0 +1,194 @@
+{
+  "result": [
+    {
+      "sys_id": "0006d8ac4fb9be40907685c98310c781",
+      "short_description": "CloudOS App Onboarding (Dev)",
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "CloudOS App Onboarding",
+      "icon": "images/service_catalog/generic_small.gifx",
+      "description": "<p><font size=\"4\"><strong>Service Description:</strong></font></p>\n<p>Submit this form for Onboarding of applications to CloudOS v2.<br /><br /></p>\n<p><span style=\"font-size: 12pt;\"><strong>What will&nbsp;happen after you have submitted your Request?</strong></span></p>\n<p>The application will be registered in the business service map, access controls will be generated, and CloudOS configuration applied automatically in the <strong>Development environment</strong>.&nbsp;<br /><br /></p>\n<ol>\n<li>User will be notified that the on-boarding process will begin</li>\n<li>AD groups will be created for the specified Moniker.\n<ol style=\"list-style-type: lower-alpha;\">\n<li>Application Admins will be added to the appropriate group</li>\n</ol>\n</li>\n<li>Access to supporting services will given to AD groups.</li>\n<li>CloudOS will be provisioned via automation</li>\n<li>Vault Paths and Mounts will be provisioned via automation</li>\n<li>User will be notified upon process completion with instructions.</li>\n</ol>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 12pt;\"><strong>Who will fulfill my Request?</strong></span></p>\n<ul type=\"disc\">\n<li>Automated&nbsp;</li>\n</ul>\n<p><span style=\"font-size: 12pt;\"><strong>What approvals are required?</strong></span></p>\n<ul type=\"disc\">\n<li>The service owner must approve the request to on-board apps to CloudOS.<br /><br /></li>\n<li>Security and and Cloud Infrastructure approve pull-request during Vault policy&nbsp;creation.<br /><br /></li>\n</ul>\n<p><span style=\"font-size: 12pt;\"><strong>Questions? Comments?</strong></span></p>\n<ul type=\"disc\">\n<li>Please reach out to <a href=\"mailto:cloudos-engg@autodesk.com\">cloudos-engg@autodesk.com</a>&nbsp;for CloudOS questions or&nbsp;<a title=\"cloud.ops.portfolio.process.business.tools@autodesk.com\" href=\"/cloud.ops.portfolio.process.business.tools@autodesk.com\">cloud.ops.portfolio.process.business.tools@autodesk.com</a>&nbsp;for form questions.</li>\n</ul>\n<p>&nbsp;</p>",
+      "show_price": false,
+      "type": "catalog_item",
+      "category": {
+        "sys_id": "c5ae8d9ed4fab100537aa3b4f48d9609",
+        "title": "Business Service Management"
+      }
+    },
+    {
+      "sys_id": "011f117a9f3002002920bde8132e7020",
+      "short_description": null,
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "Retire a Standard Change Template",
+      "icon": "images/icons/catalog_item.gifx",
+      "description": "<p class=\"p1\"><font size=\"2\"><span class=\"s1\">Request an existing Standard Change Template is made unavailable when it is no longer required or no longer acceptable as a Standard Change.  This will be confirmed by your Change Management team.</span></font></p>",
+      "show_price": false,
+      "type": "record_producer",
+      "category": {
+        "sys_id": "00728916937002002dcef157b67ffb6d",
+        "title": "Template Management"
+      }
+    },
+    {
+      "sys_id": "0168f9589dc402000560bf4be05be64f",
+      "short_description": "Compute Forecast 5",
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "Cost Utilization Forecast - Compute Forecast Entry 5",
+      "icon": "images/icons/catalog_item.gifx",
+      "description": "<p>User this form to enter your&nbsp;Add Cost Model Utilization Forecast &nbsp;</p>\n<p>For instructions on how to enter Cloud Ops Forecast go here...</p>\n<p>&nbsp;</p>\n<p>&nbsp;</p>",
+      "show_price": false,
+      "type": "record_producer",
+      "category": {
+        "sys_id": "",
+        "title": null
+      }
+    },
+    {
+      "sys_id": "04c0bbc06faa71005b6407321c3ee4f9",
+      "short_description": null,
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "A360: Cloud Ops SaaS",
+      "icon": "images/nav_bult.gif",
+      "description": "",
+      "show_price": false,
+      "type": "catalog_item",
+      "category": {
+        "sys_id": "81b4bfc06faa71005b6407321c3ee48e",
+        "title": "A360 Projects"
+      }
+    },
+    {
+      "sys_id": "0b3bc30a4f857600cc13ee6d0210c7bb",
+      "short_description": null,
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "Abus test template",
+      "icon": "images/icons/catalog_item.gifx",
+      "description": "",
+      "show_price": false,
+      "type": "catalog_item",
+      "category": {
+        "sys_id": "b0fdfb01932002009ca87a75e57ffbe9",
+        "title": "Certified Routine Change"
+      }
+    },
+    {
+      "sys_id": "0defe7c06faa71005b6407321c3ee41c",
+      "short_description": null,
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "A360: Cloud Ops Agile Delivery",
+      "icon": "images/nav_bult.gif",
+      "description": "",
+      "show_price": false,
+      "type": "catalog_item",
+      "category": {
+        "sys_id": "",
+        "title": null
+      }
+    },
+    {
+      "sys_id": "101dcec34fda360014e8b47f0210c796",
+      "short_description": null,
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "April 27 Testing",
+      "icon": "images/icons/catalog_item.gifx",
+      "description": "",
+      "show_price": false,
+      "type": "catalog_item",
+      "category": {
+        "sys_id": "b0fdfb01932002009ca87a75e57ffbe9",
+        "title": "Certified Routine Change"
+      }
+    },
+    {
+      "sys_id": "10e4a33f4f587200907685c98310c729",
+      "short_description": "Application Router Record",
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "New Application Router Record",
+      "icon": "images/icons/catalog_item.gifx",
+      "description": "<p><strong><span style=\"font-size: 12pt;\">Service Description:</span></strong></p>\n<p>A router record is a record that is used to correlate a Service Tag to a Business Service. &nbsp;Use this form to request to create a new record in the Application Router Table.</p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 12pt;\"><strong>What will&nbsp;happen after you have submitted your Request?</strong></span>&nbsp;</p>\n<p>Your record will be created.</p>\n<p>&nbsp;</p>\n<p><strong><span style=\"font-size: 12pt;\">Who will fulfill my Request?</span></strong></p>\n<ul type=\"disc\">\n<li>Cloud Ops&nbsp;PPBT</li>\n</ul>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 12pt;\"><strong>What approvals are required?</strong></span></p>\n<ul type=\"disc\">\n<li>None</li>\n</ul>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 12pt;\"><strong>Questions? Comments?</strong></span></p>\n<ul type=\"disc\">\n<li>Please reach out to&nbsp;<a title=\"cloud.ops.portfolio.process.business.tools@autodesk.com\" href=\"/cloud.ops.portfolio.process.business.tools@autodesk.com\">cloud.ops.portfolio.process.business.tools@autodesk.com</a>&nbsp;or use the comments field at the bottom of the form</li>\n</ul>",
+      "show_price": false,
+      "type": "record_producer",
+      "category": {
+        "sys_id": "c5ae8d9ed4fab100537aa3b4f48d9609",
+        "title": "Business Service Management"
+      }
+    },
+    {
+      "sys_id": "1fd38b952b0b5200056069a219da1525",
+      "short_description": "Security Exception",
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "Security Exception",
+      "icon": "images/service_catalog/generic_small.gifx",
+      "description": "<p><span style=\"font-size: 12pt;\"><strong>Service Description:</strong></span></p>\n<p>Use this form to make a request for a security exception.</p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 12pt;\"><strong>What will&nbsp;happen after you have submitted your Request?</strong></span></p>\n<p>Your requested exception will be reviewed, and you will be notified of the outcome via email.</p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 12pt;\"><strong>Who will fulfill my Request?</strong></span></p>\n<ul type=\"disc\">\n<li>Cloud Security</li>\n</ul>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 12pt;\"><strong>What approvals are required?</strong></span></p>\n<ul type=\"disc\">\n<li>Hiring Manager</li>\n<li>Cloud Security</li>\n</ul>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 12pt;\"><strong>Questions? Comments?</strong></span></p>\n<ul type=\"disc\">\n<li>Please reach out to&nbsp;<a title=\"cloud.ops.portfolio.process.business.tools@autodesk.com\" href=\"/cloud.ops.portfolio.process.business.tools@autodesk.com\">cloud.ops.portfolio.process.business.tools@autodesk.com</a>&nbsp;or use the comments field at the bottom of the form</li>\n</ul>\n<p>&nbsp;</p>",
+      "show_price": false,
+      "type": "catalog_item",
+      "category": {
+        "sys_id": "9e4f314f414242008baf700763336b59",
+        "title": "Security/Compliance Services"
+      }
+    },
+    {
+      "sys_id": "22f1090dd4b6b100537aa3b4f48d96c4",
+      "short_description": "New AWS Account",
+      "catalogs": [
+        {
+          "sys_id": "e0d08b13c3330100c8b837659bba8fb4",
+          "title": " Cloud Infrastructure and Architecture"
+        }
+      ],
+      "name": "Request a new AWS Account",
+      "icon": "images/service_catalog/generic_small.gifx",
+      "description": "<p><strong>What happens after you submit your new AWS account request?</strong></p>\n<ol>\n<li>Accounts will be activated once security credentials are issued.</li>\n<li>Account requestors will have 2 business days to submit a forecast for user adoption (in Production environments) or average compute hours (in Development environments).</li>\n<li>We recommend to have: one Production account per service, one Development per service and one for Staging per service.</li>\n<li>Questions to consider before submitting a new account request:</li>\n</ol>\n<ul>\n<ul>\n<li>Is this an account for a brand new service?\n<ul>\n<li>If yes, provide new service name, description and email confirmation from Product Management leader.</li>\n<li>If not, explore using existing services accounts and enable tagging to track the new activity. Justification must be provided to request a new account for an existing service.</li>\n</ul>\n</li>\n<li>Plan in advance for speed:\n<ul>\n<li>Calculate the monthly adoption (for Production) OR compute hours (for Development) average forecasts.</li>\n<li>Seek your Finance Business Partner's budget approval to cover the new account costs.</li>\n</ul>\n</li>\n</ul>\n</ul>\n<p>Please contact&nbsp;<a href=\"mailto:AWS.Account.Request@autodesk.com\">AWS.Account.Request@autodesk.com</a>&nbsp;with any questions.</p>",
+      "show_price": false,
+      "type": "catalog_item",
+      "category": {
+        "sys_id": "c5ae8d9ed4fab100537aa3b4f48d9609",
+        "title": "Business Service Management"
+      }
+    }
+  ]
+}

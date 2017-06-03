@@ -1,4 +1,5 @@
 from datetime import *
+import ipdb
 
 def to_date(date):
     return datetime.strptime(date, "%Y-%m-%d %H:%M:%S")

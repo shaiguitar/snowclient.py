@@ -6,7 +6,6 @@ import pprint
 from snowclient.client import Client
 from snowclient.querybuilder import QueryBuilder
 
-
 def build_query():
     qb = QueryBuilder()
     start = datetime.strptime('2015-11-17 00:00:00', "%Y-%m-%d %H:%M:%S")
