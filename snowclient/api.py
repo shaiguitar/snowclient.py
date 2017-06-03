@@ -46,10 +46,8 @@ class Api:
         res = self.table_api_get(table, sys_id)
         return res
 
-    #def fatal_code(e):
-    #    return 400 <= e.response.status_code < 500
-
     # backoff/retries built in.
+    # someday? def fatal_code(e): return 400 <= e.response.status_code < 500
     @backoff.on_exception(backoff.expo,
                       requests.exceptions.RequestException,
                       max_tries=8)

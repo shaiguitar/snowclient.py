@@ -13,10 +13,13 @@ class TestApi(unittest.TestCase):
       self.api = Api("https://booboo.service-now.com", "foo", "pass")
 
   def test_url_for_table_api(self):
-    # python 3.4 is being a bitch, but this is the idea.
-    #assert_equal (self.api.url_for_table_api("foo", "bar", sys_action="insert", sys_limit=10),
-    #               "https://booboo.service-now.com/api/now/v1/table/foo/bar?sys_limit=10&sys_action=insert")
-    pass
+    assert_equal (self.api.url_for_table_api("foo", "bar", sys_action="insert", sys_limit=10),
+                   "https://booboo.service-now.com/api/now/v1/table/foo/bar?sys_action=insert&sys_limit=10")
+
+  # https://docs.servicenow.com/bundle/istanbul-servicenow-platform/page/integrate/inbound-rest/concept/c_ServiceCatalogAPI.html
+  # def test_url_for_catalog_api(self):
+  #   assert_equal (self.api.url_for_catalog_api("foo", "bar", sys_action="insert", sys_limit=10),
+  #                  "https://booboo.service-now.com/api/sn_sc/v1/servicecatalog/items")
 
   @responses.activate
   def test_generic_request(self):

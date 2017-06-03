@@ -11,7 +11,7 @@ f.close()
 # print dictionary object loaded from file
 # print(gdata)
 # datastructure:
-#   { 
+#   {
 #     (type, sys_id) -> [(type, sys_id), (type_sys_id)]
 #     (type, sys_id) -> [(type, sys_id), (type_sys_id), (type, sys_id)]
 #   }
