@@ -1,6 +1,6 @@
 from snowclient.errors import SnowError
 from snowclient.snowrecord import SnowRecord
-
+import ipdb
 import json
 import requests
 import backoff
@@ -42,12 +42,9 @@ class Api:
         get a collection of records by table name.
         returns a dict (the json map) for python 3.4
         """
-        records = []
         result = self.table_api_get(table, **kparams)
         self.raise_if_error(result)
-        for elem in result["result"]:
-            records.append(SnowRecord(self, table, **elem))
-        return records
+        return self.to_records(result, table)
 
     def get(self,table, sys_id):
         """
@@ -56,7 +53,7 @@ class Api:
         """
         result = self.table_api_get(table, sys_id)
         self.raise_if_error(result)
-        return SnowRecord(self, table, **result["result"])
+        return self.to_record(result, table)
 
     # backoff/retries built in.
     # someday? def fatal_code(e): return 400 <= e.response.status_code < 500
@@ -83,6 +80,15 @@ class Api:
             version = version_file.read().strip()
 
         return "Python Snow Api Client (Version %s)" % version
+
+    def to_records(self, result, tablename):
+        records = []
+        for elem in result["result"]:
+            records.append(SnowRecord(self, tablename, **elem))
+        return records
+
+    def to_record(self, result, tablename):
+        return SnowRecord(self, tablename, **result["result"])
 
     def is_error(self, res):
         if "error" in res:
@@ -140,17 +146,6 @@ class Api:
         def __init__(self, api):
             self.api = api
 
-        def items(self):
-            url = "/api/sn_sc/v1/servicecatalog/items"
-            result = json.loads(self.api.req("get", self.api.base_url + url).text)
-
-            self.api.raise_if_error(result)
-
-            records = []
-            for elem in result["result"]:
-                records.append(SnowRecord(self, "SERVICECATALOG:item", **elem))
-            return records
-
         # This method retrieves a list of catalogs to which the user has access.
         def catalogs(self):
             url = "/api/sn_sc/v1/servicecatalog/catalogs"
@@ -158,10 +153,25 @@ class Api:
 
             self.api.raise_if_error(result)
 
-            records = []
-            for elem in result["result"]:
-                records.append(SnowRecord(self, "SERVICECATALOG:catalog", **elem))
-            return records
+            return self.api.to_records(result, "SERVICECATALOG:catalog")
+
+        # This method retrieves all the information about a requested catalog.
+        def catalog(self, catalog_sys_id):
+            url = "/api/sn_sc/v1/servicecatalog/catalogs/%s" % catalog_sys_id
+            result = json.loads(self.api.req("get", self.api.base_url + url).text)
+
+            self.api.raise_if_error(result)
+
+            ipdb.set_trace()
+            return self.api.to_record(result, "SERVICECATALOG:catalog")
+
+        def items(self):
+            url = "/api/sn_sc/v1/servicecatalog/items"
+            result = json.loads(self.api.req("get", self.api.base_url + url).text)
+
+            self.api.raise_if_error(result)
+
+            return self.api.to_records(result, "SERVICECATALOG:item")
 
         def categories(self, catalog_sys_id):
             url = "/api/sn_sc/servicecatalog/catalogs/%s/categories" % catalog_sys_id
@@ -169,8 +179,6 @@ class Api:
 
             self.api.raise_if_error(result)
 
-            records = []
-            for elem in result["result"]:
-                records.append(SnowRecord(self, "SERVICECATALOG:catalog", **elem))
-            return records
+            return self.api.to_records(result, "SERVICECATALOG:category")
+
 

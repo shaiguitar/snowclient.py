@@ -23,9 +23,15 @@ catalogs = a.catalog_api.catalogs()
 pp.pprint("catalogs found:")
 pp.pprint(list(map(lambda x: [x.title, x.sys_id], catalogs)))
 
+catalog = a.catalog_api.catalog(catalogs[0].sys_id)
+
+pp.pprint("catalog found:")
+pp.pprint(catalog.__dict__)
+
 i = catalogs[0].sys_id
 categories = a.catalog_api.categories(i)
 
 pp.pprint("categories found:")
 pp.pprint(categories[0].__dict__)
+
 
