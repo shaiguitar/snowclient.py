@@ -15,8 +15,8 @@ class TestApi(unittest.TestCase):
       self.catalog_api = self.api.catalog_api
       self._setup_mocking()
 
-  def test_url_for_table_api(self):
-    assert_equal (self.api.url_for_table_api("foo", "bar", sys_action="insert", sys_limit=10),
+  def test_url_for_api(self):
+    assert_equal (self.api.url_for_api("/api/now/v1/table", "foo", "bar", sys_action="insert", sys_limit=10),
                    "https://booboo.service-now.com/api/now/v1/table/foo/bar?sys_action=insert&sys_limit=10")
 
   @responses.activate
@@ -33,9 +33,7 @@ class TestApi(unittest.TestCase):
 
 
   def _setup_mocking(self):
-
     # https://docs.servicenow.com/bundle/istanbul-servicenow-platform/page/integrate/inbound-rest/concept/c_ServiceCatalogAPI.html
-    # re_items = re.compile(r'https?://booboo.service-now.com/api/sn_sc/v1/servicecatalog/items')
 
     re_catalog_items = re.compile(r'https?://booboo.service-now.com/api/sn_sc/v1/servicecatalog/items')
 
@@ -53,3 +51,11 @@ class TestApi(unittest.TestCase):
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(items)
     assert_equal(len(items) > 0, True)
+
+  # this can be tested if integration tests were a thing.
+  #
+  #  def test_catalog_api_limit(self):
+  #    items = self.catalog_api.items(sysparm_limit=1)
+  #    pp = pprint.PrettyPrinter(indent=4)
+  #    pp.pprint(items)
+  #    assert_equal(len(items) == 1, True)

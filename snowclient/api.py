@@ -43,7 +43,6 @@ class Api:
         returns a dict (the json map) for python 3.4
         """
         result = self.table_api_get(table, **kparams)
-        self.raise_if_error(result)
         return self.to_records(result, table)
 
     def get(self,table, sys_id):
@@ -52,19 +51,19 @@ class Api:
         returns a dict (the json map) for python 3.4
         """
         result = self.table_api_get(table, sys_id)
-        self.raise_if_error(result)
         return self.to_record(result, table)
 
     # backoff/retries built in.
     # someday? def fatal_code(e): return 400 <= e.response.status_code < 500
     @backoff.on_exception(backoff.expo,
                       requests.exceptions.RequestException,
-                      max_tries=8)
+                          max_tries=5)
                       # giveup=fatal_code)
     def req(self, meth, url):
         """
         sugar that wraps the 'requests' module with basic auth and some headers.
         """
+        self.logger.debug("Making request: %s %s" % (meth, url))
         req_method = getattr(requests, meth)
         return (req_method(url,
                          auth=(self.__username, self.__password),
@@ -82,12 +81,16 @@ class Api:
         return "Python Snow Api Client (Version %s)" % version
 
     def to_records(self, result, tablename):
+        self.raise_if_error(result)
+
         records = []
         for elem in result["result"]:
             records.append(SnowRecord(self, tablename, **elem))
         return records
 
     def to_record(self, result, tablename):
+        self.raise_if_error(result)
+
         return SnowRecord(self, tablename, **result["result"])
 
     def is_error(self, res):
@@ -107,24 +110,16 @@ class Api:
             detail = result["error"]["detail"]
             raise SnowError(msg, detail)
 
-    # HELPER, with auth+json/less boilerplate
     def table_api_get(self, *paths, **kparams):
-        """
-        helper to make GET /api/now/v1/table requests
-        """
-        url = self.url_for_table_api(*paths, **kparams)
+        """ helper to make GET /api/now/v1/table requests """
+        url = self.url_for_api("/api/now/v1/table", *paths, **kparams)
         rjson = self.req("get", url).text
-
-        self.logger.debug("GET json resonse: %s %s" % (url, rjson))
-
         return json.loads(rjson)
 
-    # HELPER, url builder
-    def url_for_table_api(self, *paths, **kparams):
-        """
-        url builder helper to make /api/now/v1/table paths
-        """
-        base = self.base_url + "/api/now/v1/table"
+    def url_for_api(self, path_prefix, *paths, **kparams):
+        """ url builder helper to make /api/now/v1/table paths """
+
+        base = self.base_url + path_prefix
         for p in paths:
             base += "/"
             base += p
@@ -146,39 +141,47 @@ class Api:
         def __init__(self, api):
             self.api = api
 
+        ##### GET #####
+
+        def catalog_get(self, url):
+            return json.loads(self.api.req("get", url).text)
+
         # This method retrieves a list of catalogs to which the user has access.
-        def catalogs(self):
-            url = "/api/sn_sc/v1/servicecatalog/catalogs"
-            result = json.loads(self.api.req("get", self.api.base_url + url).text)
-
-            self.api.raise_if_error(result)
-
-            return self.api.to_records(result, "SERVICECATALOG:catalog")
+        def catalogs(self, **kparams):
+            url = self.api.url_for_api("/api/sn_sc/v1/servicecatalog/catalogs", **kparams)
+            return self.api.to_records(self.catalog_get(url), "SERVICECATALOG:catalog")
 
         # This method retrieves all the information about a requested catalog.
         def catalog(self, catalog_sys_id):
-            url = "/api/sn_sc/v1/servicecatalog/catalogs/%s" % catalog_sys_id
-            result = json.loads(self.api.req("get", self.api.base_url + url).text)
+            url = self.api.url_for_api("/api/sn_sc/v1/servicecatalog/catalogs/%s" % catalog_sys_id)
+            return self.api.to_record(self.catalog_get(url), "SERVICECATALOG:catalog")
 
-            self.api.raise_if_error(result)
+        # This method retrieves a list of categories for a catalog.
+        def categories(self, catalog_sys_id, **kparams):
+            url = self.api.url_for_api("/api/sn_sc/servicecatalog/catalogs/%s/categories" % catalog_sys_id, **kparams)
+            return self.api.to_records(self.catalog_get(url), "SERVICECATALOG:category")
 
-            ipdb.set_trace()
-            return self.api.to_record(result, "SERVICECATALOG:catalog")
+        # This method retrieves all the information about a requested category.
+        def category(self, category_sys_id):
+            url = self.api.url_for_api("/api/sn_sc/servicecatalog/categories/%s" % category_sys_id)
+            return self.api.to_record(self.catalog_get(url), "SERVICECATALOG:category")
 
-        def items(self):
-            url = "/api/sn_sc/v1/servicecatalog/items"
-            result = json.loads(self.api.req("get", self.api.base_url + url).text)
+        # This method retrieves a list of catalogs and a list of items for each catalog.
+        def items(self, **kparams):
+            url = self.api.url_for_api("/api/sn_sc/v1/servicecatalog/items", **kparams)
+            return self.api.to_records(self.catalog_get(url), "SERVICECATALOG:item")
 
-            self.api.raise_if_error(result)
+        # This method retrieves the catalog item with the specified sys_id.
+        def item(self, item_sys_id):
+            url = self.api.url_for_api("/api/sn_sc/v1/servicecatalog/items/%s" % item_sys_id)
+            return self.api.to_record(self.catalog_get(url), "SERVICECATALOG:item")
 
-            return self.api.to_records(result, "SERVICECATALOG:item")
+        ##### POST #####
 
-        def categories(self, catalog_sys_id):
-            url = "/api/sn_sc/servicecatalog/catalogs/%s/categories" % catalog_sys_id
-            result = json.loads(self.api.req("get", self.api.base_url + url).text)
+        # # This method adds an item to the cart of the current user.
+        # def add_to_cart(self, item_sys_id):
+        #     url = "/sn_sc/servicecatalog/items/{sys_id}/add_to_cart"
+        #     return self.api.to_record(self.catalog_post(url), "SERVICECATALOG:item")
 
-            self.api.raise_if_error(result)
-
-            return self.api.to_records(result, "SERVICECATALOG:category")
 
 

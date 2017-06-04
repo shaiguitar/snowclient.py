@@ -12,26 +12,40 @@ client = Client("https://autodeskcloudopsstg.service-now.com", user, password)
 pp = pprint.PrettyPrinter(indent=4)
 a = client.api
 
-items = a.catalog_api.items()
+## catalogs are the big picture "service catalogs" in the system.
+## in our case, 1-1 snow system.
+#catalogs = a.catalog_api.catalogs()
+#
+#pp.pprint("catalogs found:")
+#pp.pprint(list(map(lambda x: [x.title, x.sys_id], catalogs)))
+#
+#catalog = a.catalog_api.catalog(catalogs[0].sys_id)
+#
+#pp.pprint("specific catalog found:")
+#pp.pprint(catalog.__dict__)
+#
+#catalog_id = catalogs[0].sys_id
+#
+## categories are where groups of items are stored.
+## for example, "Cloud Operations Engineering - Service"
+## could be a category of items, wherein the specific items would be... (listed below)
+#categories = a.catalog_api.categories(catalog_id)
+#
+#pp.pprint("categories found:")
+#pp.pprint(list(map(lambda x: x.title, categories)))
 
-pp.pprint("items found:")
-pp.pprint(list(map(lambda x: x.name, items)))
+items = a.catalog_api.items(sysparm_limit=10000)
+
+pp.pprint("moniker items found len: %s" % len(items))
+moniker_items = filter(lambda i: "moniker" in i.name.lower(),items)
+pp.pprint(list(map(lambda x: [x.name, x.sys_id], items)))
+
+# etc
+item = a.catalog_api.item("dc1eaaf9870c7500537a9ffd19434db4")
+
+pp.pprint("specific item found:")
+pp.pprint(item.__dict__)
 
 
-catalogs = a.catalog_api.catalogs()
-
-pp.pprint("catalogs found:")
-pp.pprint(list(map(lambda x: [x.title, x.sys_id], catalogs)))
-
-catalog = a.catalog_api.catalog(catalogs[0].sys_id)
-
-pp.pprint("catalog found:")
-pp.pprint(catalog.__dict__)
-
-i = catalogs[0].sys_id
-categories = a.catalog_api.categories(i)
-
-pp.pprint("categories found:")
-pp.pprint(categories[0].__dict__)
 
 
