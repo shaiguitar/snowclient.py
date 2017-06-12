@@ -19,7 +19,7 @@ with open(os.path.join(os.path.expanduser("~"), ".snow-auth.json")) as data_file
 # set up the client with the correct URL
 client = Client("https://autodeskcloudops.service-now.com", user, password)
 
-ss = client.list("u_aws_glossary", sysparm_limit=10)
+ss = client.list("cmdb_ci_service", sysparm_limit=1000)
 pp = pprint.PrettyPrinter(indent=4)
 
 ipdb.set_trace()
