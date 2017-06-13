@@ -5,7 +5,9 @@
 import ipdb
 
 class SnowRecord:
-    def tablename_from_link(link):
+
+    @classmethod
+    def tablename_from_link(klass, link):
         """
         Helper method for URL's that look like /api/now/v1/table/FOO/sys_id etc.
         """
