@@ -4,7 +4,9 @@ import random
 from datetime import datetime
 import pprint
 
+from itertools import chain # flatten
 import sys
+
 # use local
 sys.path.append("/Users/shai/r/snowclient.py")
 
@@ -24,14 +26,9 @@ pp = pprint.PrettyPrinter(indent=4)
 
 ipdb.set_trace()
 
-
-
-
-
-
-
-
-
+acms = filter(lambda x: "ACM" in x.name, ss)
+resolved = map(lambda x: client.resolve_links(x), acms)
+resolved_flattened = list(chain.from_iterable(resolved))
 
 
 
