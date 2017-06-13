@@ -6,4 +6,5 @@ build
 dist
 snowclient.egg-info
 .noseids
+files.txt
 tests/integration_tests.py
