@@ -38,3 +38,6 @@ for service, incident in results:
     print("\t\t")
     print(incident.description)
     print
+
+print("total incidents:")
+print(len(incidents))
