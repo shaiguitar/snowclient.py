@@ -4,7 +4,7 @@ from pygraphviz import *
 import random
 
 # graph data:
-f = open(r'graph-from-incident.pickle', 'rb')
+f = open(r'graph-from-shai.pickle', 'rb')
 gdata = pickle.load(f)
 f.close()
 
@@ -34,5 +34,5 @@ for l in G.nodes():
         if t in str(l):
             l.attr['fillcolor'] = type_color[t]
 
-G.draw('from_incident.png', format='png',prog='dot')
+G.draw('from_shai.png', format='png',prog='dot')
 
