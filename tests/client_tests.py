@@ -66,7 +66,7 @@ class TestClient(unittest.TestCase):
     assert_equal(orig_record.test_key_orig, "test_val_orig")
 
     # get links, assert against those.
-    linked_record = self.client.resolve_links(orig_record)[0]
+    linked_record = self.client.api.resolve_links(orig_record)[0]
     # no mutation
     assert_equal(orig_record.test_key_orig, "test_val_orig")
 
@@ -78,7 +78,7 @@ class TestClient(unittest.TestCase):
     orig_record = self.client.list("original_table")[0]
 
     # get links, assert against those.
-    linked_record = self.client.resolve_link(orig_record, "linked_obj")
+    linked_record = self.client.api.resolve_link(orig_record, "linked_obj")
 
     # no mutation
     assert_equal(orig_record.test_key_orig, "test_val_orig")

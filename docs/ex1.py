@@ -48,7 +48,7 @@ print()
 #  # this doesn't recurse, just goes one level deep
 #  # and replaces the <link> with a new snow_record.
 #  print("deferencing links from record...")
-#  client.resolve_links(a_record)
+#  a_record.resolve_links()
 #
 #  # linked objects will show up as their own records.
 #  print(a_record)

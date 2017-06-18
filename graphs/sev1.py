@@ -30,7 +30,7 @@ incidents = client.list("incident", sysparm_limit=10000, sysparm_query=build_que
 
 # print(incidents[4].__dict__)
 
-results = map(lambda i: [client.resolve_link(i, "cmdb_ci").name, i], incidents)
+results = map(lambda i: [i.resolve_link("cmdb_ci").name, i], incidents)
 
 for service, incident in results:
     print("#### SERVICE: %s" % service)

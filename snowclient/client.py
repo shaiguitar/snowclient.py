@@ -23,34 +23,3 @@ class Client:
         record = self.api.get(table, sys_id)
         return record
 
-    def resolve_links(self, snow_record):
-        """
-        Get the infos from the links and return SnowRecords[].
-        """
-        records = []
-        for attr, link in snow_record.links().items():
-            records.append(self.resolve_link(snow_record, attr))
-        return records
-
-    def resolve_link(self, snow_record, field_to_resolve):
-        """
-        Get the info from the link and return a SnowRecord.
-        """
-        link = snow_record.links()[field_to_resolve]
-
-        linked_response = self.api.req("get", link) # rety here...
-
-        rjson = linked_response.json()
-        rtablename = SnowRecord.tablename_from_link(link)
-
-        # could do this, but better to not mutate:
-        # setattr(snow_record, field_to_resolve, linked)
-        # so just return new record. could infer
-
-        if "result" in rjson:
-            linked = SnowRecord(self, rtablename, **rjson["result"])
-        else:
-            linked = SnowRecord.NotFound(self, rtablename, "Could not resolve link %s" % link, [rjson, rtablename, link, self])
-
-        return linked
-

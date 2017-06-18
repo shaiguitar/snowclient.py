@@ -1,7 +1,7 @@
 from nose.tools import *
 from snowclient.snowrecord import *
 import unittest
-from unittest.mock import MagicMock
+from mock import MagicMock
 
 class TestSnowRecord(unittest.TestCase):
   def setUp(self):

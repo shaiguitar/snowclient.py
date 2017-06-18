@@ -27,7 +27,7 @@ pp = pprint.PrettyPrinter(indent=4)
 ipdb.set_trace()
 
 acms = filter(lambda x: "ACM" in x.name, ss)
-resolved = map(lambda x: client.resolve_links(x), acms)
+resolved = map(lambda x: x.resolve_links(), acms)
 resolved_flattened = list(chain.from_iterable(resolved))
 
 
@@ -74,7 +74,7 @@ resolved_flattened = list(chain.from_iterable(resolved))
 #  # this doesn't recurse, just goes one level deep
 #  # and replaces the <link> with a new snow_record.
 #  print("deferencing links from record...")
-#  client.resolve_links(a_record)
+#  a_record.resolve_links()
 #
 #  # linked objects will show up as their own records.
 #  print(a_record)

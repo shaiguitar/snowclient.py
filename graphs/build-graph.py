@@ -31,8 +31,9 @@ def recent_range():
 with open(os.path.join(os.path.expanduser("~"), ".snow-auth.json")) as data_file:
     user, password = json.load(data_file)
 client = Client("https://autodeskcloudops.service-now.com", user, password)
-snow_record = client.list("incident", sysparm_limit=1, sysparm_query=recent_range())[0]
-debug("Sys id for incident: %s" % snow_record.sys_id)
+
+# snow_record = client.list("incident", sysparm_limit=1, sysparm_query=recent_range())[0]
+# debug("Sys id for incident: %s" % snow_record.sys_id)
 
 # graph can look like
 # {
@@ -45,7 +46,10 @@ debug("Sys id for incident: %s" % snow_record.sys_id)
 
 ident_lookup = {} # keep track of records
 graph_data = defaultdict(list) # hold the graph in this.
-start_from = snow_record
+# start_from = snow_record
+
+# me!
+start_at_user_shai = client.get("sys_user", "7b4780ea6f6eb1005b6407321c3ee495")
 
 def do_before_exit():
     print('You pressed Ctrl+C!')
@@ -53,7 +57,7 @@ def do_before_exit():
     pp = pprint.PrettyPrinter(depth=2)
     pp.pprint(graph_data)
     print('going to write it out to a file')
-    afile = open(r'graph-from-incident.pickle', 'wb')
+    afile = open(r'graph-from-shai.pickle', 'wb')
     pickle.dump(graph_data, afile)
     afile.close()
     sys.exit(0)
@@ -108,18 +112,18 @@ def traverse_data(record):
             if type(v) is SnowRecord:
                 graph_data[v.identtuple()].append(n.identtuple())
 
-            if type(n) is SnowRecord:
+            if isinstance(n, SnowRecord):
                 # if we haven't visited it, mark it and enqueue.
                 if not visited(n):
                     register(n)
                     queue.append(n)
-            elif type(n) is SnowRecord.NotFound:
+            elif isinstance(n, SnowRecord.NotFound):
                 debug("Record was not found? %s(%s)" % n.identtuple())
             else:
                 debug("Problem? %s" % n)
 
     return "done"
 
-traverse_data(start_from)
+traverse_data(start_at_user_shai)
 
 do_before_exit()

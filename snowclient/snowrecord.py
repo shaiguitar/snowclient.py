@@ -16,8 +16,8 @@ class SnowRecord:
         tn = arr[i+1]
         return tn
 
-    def __init__(self, client, table_name, **entries):
-        self._client = client
+    def __init__(self, api, table_name, **entries):
+        self._api = api
 
         if table_name is None:
             print("Must provide table name!")
@@ -33,16 +33,12 @@ class SnowRecord:
         self.__dict__.update(entries)
 
     def resolve_links(self):
-        """
-        a sugar method (could be called from client) to resolve dependencies of this object.
-        """
-        return self._client.resolve_links(self)
+        """ a sugar method (could be called from api) to resolve dependencies of this object. """
+        return self._api.resolve_links(self)
 
     def resolve_link(self, field_to_resolve):
-        """
-        a sugar method (could be called from client) to resolve field of this object.
-        """
-        return self._client.resolve_link(self, field_to_resolve)
+        """ a sugar method (could be called from api) to resolve field of this object. """
+        return self._api.resolve_link(self, field_to_resolve)
 
     def identtuple(self):
         """ identity for graph node/vertex purposes """
@@ -65,11 +61,21 @@ class SnowRecord:
     #    getattr(self, k)
 
     class NotFound:
-        def __init__(self, client, table_name, msg, data):
-            self._client = client
+        def __init__(self, api, table_name, msg, data):
+            self._api = api
             self._table_name = table_name
             self.msg  = msg
             self.data = data
+
+        # duck typing. actually metaprogramming or infering the method from the actual
+        # SnowRecord interface would be better.
+        #....
+        def resolve_links(self):
+            return self._api.resolve_links(self)
+        def resolve_link(self, field_to_resolve):
+            return self._api.resolve_link(self, field_to_resolve)
+        def links(self):
+            return []
 
         def identtuple(self):
             """ identity for graph node/vertex purposes """
