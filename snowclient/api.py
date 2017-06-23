@@ -6,6 +6,8 @@ import requests
 import backoff
 import logging
 import os
+from urlparse import urlparse
+from urllib import urlencode
 
 # LOGGER ... move away from api.
 if "DEBUG" in os.environ or "SNOW_DEBUG" in os.environ:
@@ -129,21 +131,24 @@ class Api:
             base += '&'.join("%s=%s" % (key,val) for (key,val) in kparams.items())
         return base
 
-    def resolve_links(self, snow_record):
+    def resolve_links(self, snow_record, **kparams):
         """
         Get the infos from the links and return SnowRecords[].
         """
         records = []
         for attr, link in snow_record.links().items():
-            records.append(self.resolve_link(snow_record, attr))
+            records.append(self.resolve_link(snow_record, attr, **kparams))
         return records
 
-    def resolve_link(self, snow_record, field_to_resolve):
+    def resolve_link(self, snow_record, field_to_resolve, **kparams):
         """
         Get the info from the link and return a SnowRecord.
         """
         link = snow_record.links()[field_to_resolve]
 
+        if kparams:
+            link += ('&', '?')[urlparse(link).query == '']
+            link += '&'.join("%s=%s" % (urlencode(key),urlencode(val)) for (key,val) in kparams.items())
         linked_response = self.req("get", link) # rety here...
 
         rjson = linked_response.json()
