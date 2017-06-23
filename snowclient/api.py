@@ -148,7 +148,7 @@ class Api:
 
         if kparams:
             link += ('&', '?')[urlparse(link).query == '']
-            link += '&'.join("%s=%s" % (urlencode(key),urlencode(val)) for (key,val) in kparams.items())
+            link += '&'.join("%s=%s" % (key,val) for (key,val) in kparams.items())
         linked_response = self.req("get", link) # rety here...
 
         rjson = linked_response.json()
