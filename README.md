@@ -21,6 +21,8 @@ def build_query():
     qb = QueryBuilder()
     qb.between(start, end)
     qb.orderbydesc("sys_created_on")
+    qb.field_equals("bar", "baz")
+    # see more examples at test cases
     return qb.return_query
 
     # 
@@ -61,6 +63,8 @@ the nastiness of the original syntax necessary. See QueryBuilder tests for it's 
 ```
 # or DEBUG=1 nosetests -s for python requests debugging
 # use --nocapture if you want to drop into pdb
+# or for more verbose nosetests -vvs tests/
+# ultimately though:
 $ nosetests
 .
 ----------------------------

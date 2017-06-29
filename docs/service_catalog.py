@@ -7,7 +7,7 @@ from snowclient.querybuilder import QueryBuilder
 # set up the client with the correct URL
 with open(os.path.join(os.path.expanduser("~"), ".snow-auth.json")) as data_file:
     user, password = json.load(data_file)
-client = Client("https://autodeskcloudopsstg.service-now.com", user, password)
+client = Client("https://boobooservicecloudopsstg.service-now.com", user, password)
 
 pp = pprint.PrettyPrinter(indent=4)
 a = client.api

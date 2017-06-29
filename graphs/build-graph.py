@@ -30,7 +30,7 @@ def recent_range():
 # set up the client with the correct URL
 with open(os.path.join(os.path.expanduser("~"), ".snow-auth.json")) as data_file:
     user, password = json.load(data_file)
-client = Client("https://autodeskcloudops.service-now.com", user, password)
+client = Client("https://boobooservicecloudops.service-now.com", user, password)
 
 # snow_record = client.list("incident", sysparm_limit=1, sysparm_query=recent_range())[0]
 # debug("Sys id for incident: %s" % snow_record.sys_id)

@@ -25,7 +25,7 @@ with open(os.path.join(os.path.expanduser("~"), ".snow-auth.json")) as data_file
     user, password = json.load(data_file)
 
 # set up the client with the correct URL
-client = Client("https://autodeskcloudops.service-now.com", user, password)
+client = Client("https://boobooservicecloudops.service-now.com", user, password)
 incidents = client.list("incident", sysparm_limit=10000, sysparm_query=build_query())
 
 # print(incidents[4].__dict__)

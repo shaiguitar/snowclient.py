@@ -19,7 +19,7 @@ with open(os.path.join(os.path.expanduser("~"), ".snow-auth.json")) as data_file
     user, password = json.load(data_file)
 
 # set up the client with the correct URL
-client = Client("https://autodeskcloudops.service-now.com", user, password)
+client = Client("https://boobooservicecloudops.service-now.com", user, password)
 
 ss = client.list("cmdb_ci_service", sysparm_limit=1000)
 pp = pprint.PrettyPrinter(indent=4)
