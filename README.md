@@ -21,9 +21,12 @@ def build_query():
     qb = QueryBuilder()
     qb.between(start, end)
     qb.orderbydesc("sys_created_on")
-    qb.field_equals("bar", "baz")
-    # see more examples at test cases
     return qb.return_query
+    #
+    # there are more things available:
+    # qb.field_equals("bar", "baz")
+    # see more examples at test cases
+
 
     # 
     # returns the kind of stuff that you'll never want to write
