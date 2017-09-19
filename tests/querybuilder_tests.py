@@ -24,6 +24,18 @@ class TestSnowClientQuery(unittest.TestCase):
       qb = qb.orderbydesc("category")
       assert_equal(qb.return_query, "ORDERBYname^ORDERBYDESCcategory")
 
+  def test_empty_field(self):
+      qb = QueryBuilder()
+      qb.field_empty("name")
+      qb.OR()
+      qb.field_empty_string("name")
+      assert_equal(qb.return_query, "nameISEMPTY^ORnameEMPTYSTRING")
+
+  def test_not_empty_field(self):
+      qb = QueryBuilder()
+      qb.field_not_empty("name")
+      assert_equal(qb.return_query, "nameISNOTEMPTY")
+
   def test_chained_or_queries(self):
       qb = QueryBuilder()
       qb.field_equals("name", "bob")

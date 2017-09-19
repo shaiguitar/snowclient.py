@@ -5,6 +5,9 @@ class QueryBuilder:
 # snow query helper - help generate the crazy stuff service now expects
 # whether it be dates, orderby, etc.
 
+    # NB: http://wiki.servicenow.com/index.php?title=Operators_Available_for_Filters_and_Queries#gsc.tab=0
+    # lot of things to extend this query builder with.
+
     def __init__(self):
         # maintain state so these methods are chainable.
         self.return_query = ""
@@ -20,6 +23,18 @@ class QueryBuilder:
 
     def field_equals(self, field, value):
         self._append("{0}={1}".format(field, value))
+        return self
+
+    def field_empty(self, field):
+        self._append("{0}ISEMPTY".format(field))
+        return self
+
+    def field_empty_string(self, field):
+        self._append("{0}EMPTYSTRING".format(field))
+        return self
+
+    def field_not_empty(self, field):
+        self._append("{0}ISNOTEMPTY".format(field))
         return self
 
     # sys_created_onBETWEENjavascript:gs.dateGenerate('2015-04-16','00:10:00')@javascript:gs.dateGenerate('2015-04-22','12:59:59')
