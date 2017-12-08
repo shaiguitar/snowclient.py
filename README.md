@@ -89,3 +89,4 @@ Other docs:
 - [legacy api docs](http://wiki.servicenow.com/index.php?title=Legacy:JSON_Web_Service#gsc.tab=0)
 - [docs table api](http://wiki.servicenow.com/index.php?title=Table_API#POST_.2Fapi.2Fnow.2Fv1.2Ftable.2F.28tableName.29&gsc.tab=0)
 - [docs rest api](http://wiki.servicenow.com/index.php?title=REST_API#Security&gsc.tab=0)
+- [midserver](https://docs.servicenow.com/bundle/helsinki-it-operations-management/page/product/mid-server/concept/c_MIDServerArchitecture.html)
