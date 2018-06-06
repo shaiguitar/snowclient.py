@@ -6,6 +6,8 @@ import requests
 import backoff
 import logging
 import os
+
+# todo, switch on python3 (urllib import parse as urlparse) vs python2 (urlparse as is)
 from urlparse import urlparse
 from urllib import urlencode
 

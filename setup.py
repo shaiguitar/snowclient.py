@@ -11,7 +11,7 @@ with open(os.path.join(project_root, 'snowclient','VERSION')) as version_file:
 config = {
     'description': 'snow',
     'author': 'shai rosenfeld',
-    'url': 'github',
+    'url': 'https://github.com/shaiguitar/snowclient.py',
     'download_url': 'https://github.com/shaiguitar/snowclient.py',
     'author_email': 'shaiguitar@gmail.com',
     'version': version,
