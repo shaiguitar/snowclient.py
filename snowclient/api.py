@@ -7,9 +7,10 @@ import backoff
 import logging
 import os
 
-# todo, switch on python3 (urllib import parse as urlparse) vs python2 (urlparse as is)
-from urlparse import urlparse
-from urllib import urlencode
+try:
+  from urlparse import urlparse
+except ImportError:
+  from urllib import parse as urlparse
 
 # LOGGER ... move away from api.
 if "DEBUG" in os.environ or "SNOW_DEBUG" in os.environ:
