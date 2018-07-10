@@ -154,7 +154,10 @@ class Api:
         """
         Get the info from the link and return a SnowRecord.
         """
-        link = snow_record.links()[field_to_resolve]
+        try:
+          link = snow_record.links()[field_to_resolve]
+        except KeyError as e:
+          return SnowRecord.NotFound(self, snow_record._table_name, "Could not find field %s in record" % field_to_resolve, [snow_record, field_to_resolve, self])
 
         if kparams:
             link += ('&', '?')[urlparse(link).query == '']

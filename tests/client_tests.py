@@ -67,7 +67,6 @@ class TestClient(unittest.TestCase):
 
     # get links, assert against those.
     linked_record = self.client.api.resolve_links(orig_record)[0]
-    linked_record = self.client.api.resolve_links(orig_record)[0]
     # no mutation
     assert_equal(orig_record.test_key_orig, "test_val_orig")
 
@@ -88,6 +87,12 @@ class TestClient(unittest.TestCase):
 
     assert_equal(linked_record.test_key_linked, "test_val_linked")
     assert_equal(linked_record._table_name, "linked_table")
+
+  @responses.activate
+  def test_no_field_to_resolve(self):
+    orig_record = self.client.list("original_table")[0]
+    try_to_get_field = self.client.api.resolve_link(orig_record, "NO_SUCH_LINK_OR_ATTR_EXISTS")
+    assert_equal(try_to_get_field.__class__.__name__, "NotFound" )
 
   @responses.activate
   def test_record_not_found(self):
