@@ -25,12 +25,19 @@ if "DEBUG" in os.environ or "SNOW_DEBUG" in os.environ:
     # You must initialize logging, otherwise you'll not see debug output.
     # this will work only if os.environ is set appropriately...
 
+    logPath = "/tmp" # default
+
     logging.basicConfig()
     logging.getLogger().setLevel(logging.DEBUG)
     requests_log = logging.getLogger("requests.packages.urllib3")
     requests_log.setLevel(logging.DEBUG)
     requests_log.propagate = True
 
+    fileHandler = logging.FileHandler("/tmp/snowclient-requests.log".format(logPath, fileName))
+    requests_log.addHandler(fileHandler)
+
+    consoleHandler = logging.StreamHandler()
+    requests_log.addHandler(consoleHandler)
 
 # class Api synonomous with TableApi.
 # CatalogApi nested within. (different api)

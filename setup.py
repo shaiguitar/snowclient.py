@@ -9,7 +9,8 @@ with open(os.path.join(project_root, 'snowclient','VERSION')) as version_file:
     version = version_file.read().strip()
 
 config = {
-    'description': 'snow',
+    'description': 'ServiceNow api client in python',
+    'long_description': 'Python REST client with some syntax sugar - see QueryBuilder and docs for details.',
     'author': 'shai rosenfeld',
     'url': 'https://github.com/shaiguitar/snowclient.py',
     'download_url': 'https://github.com/shaiguitar/snowclient.py',
