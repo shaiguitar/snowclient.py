@@ -69,3 +69,7 @@ class TestSnowRecord(unittest.TestCase):
     assert_equal(nf.data, [1, 2, 3]) #anything
 
     assert_equal(nf.identtuple(), ("tablename", "1,2,3")) #anything
+
+    assert_equal(nf.no_such_method_or_attr, "") # empty string - we'd assume a SnowRecord.foo but doesn't exist, return ""
+
+
