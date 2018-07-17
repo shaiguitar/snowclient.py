@@ -23,12 +23,14 @@ GET /api/now/v1/table/change_request?sysparm_limit=10&sysparm_query=cmdb_ciISNOT
 
 Can be generated instead from:
 
-       qb.field_equals("state", "1")
-       qb.field_equals("assignment_group", "deadbeef")
-       start = datetime.utcnow()
-       end = start - timedelta(days=30)
-       qb.between(end, start)
-       qb.orderbydesc("sys_created_on")
+```
+qb.field_equals("state", "1")
+qb.field_equals("assignment_group", "deadbeef")
+start = datetime.utcnow()
+end = start - timedelta(days=30)
+qb.between(end, start)
+qb.orderbydesc("sys_created_on")
+```
 
 Which, depending on the eyes (and cough, auto method completions), might hurt just a littttle bit less.
 
