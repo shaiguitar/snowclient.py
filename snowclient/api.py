@@ -25,7 +25,8 @@ if "DEBUG" in os.environ or "SNOW_DEBUG" in os.environ:
     # You must initialize logging, otherwise you'll not see debug output.
     # this will work only if os.environ is set appropriately...
 
-    logPath = "/tmp" # default
+    logPath = "/tmp"
+    fileName = "snowclient-requests.log"
 
     logging.basicConfig()
     logging.getLogger().setLevel(logging.DEBUG)

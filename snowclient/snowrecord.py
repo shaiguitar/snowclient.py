@@ -82,3 +82,11 @@ class SnowRecord:
             s = ','.join(str(x) for x in self.data)
             return (self._table_name, s)
 
+        def __getattr__(self, name):
+            # 'called %s with %d arguments %s & %d keywords %s' % (name, len(args), args, len(kwargs), kwargs)
+            #
+            # NotFound can be used as a SnowRecord object mirror:
+            # such that if I assume a field is there, but it's not (because NotFound), just return an empty string.
+            #
+            # ie, usage: SnowRecord.foo but it's NotFound, so return empty string (vs KeyError or whatever comes up)
+            return ""
