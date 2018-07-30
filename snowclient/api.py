@@ -7,10 +7,7 @@ import backoff
 import logging
 import os
 
-try:
-  from urlparse import urlparse
-except ImportError:
-  from urllib import parse as urlparse
+from requests.utils import urlparse # urlparse() both py2 and py3 compat
 
 # LOGGER ... move away from api.
 if "DEBUG" in os.environ or "SNOW_DEBUG" in os.environ:
@@ -58,6 +55,14 @@ class Api:
         result = self.table_api_get(table, **kparams)
         return self.to_records(result, table)
 
+    def update(self,table, sys_id, **kparams):
+        """
+        use PUT to update a single record by table name and sys_id
+        returns a dict (the json map) for python 3.4
+        """
+        result = self.table_api_put(table, sys_id, **kparams)
+        return self.to_record(result, table)
+
     def get(self,table, sys_id):
         """
         get a single record by table name and sys_id
@@ -72,15 +77,16 @@ class Api:
                       requests.exceptions.RequestException,
                           max_tries=5)
                       # giveup=fatal_code)
-    def req(self, meth, url):
+    def req(self, meth, url, http_data=''):
         """
         sugar that wraps the 'requests' module with basic auth and some headers.
         """
-        self.logger.debug("Making request: %s %s" % (meth, url))
+        self.logger.debug("Making request: %s %s\nBody:%s" % (meth, url, http_data))
         req_method = getattr(requests, meth)
         return (req_method(url,
-                         auth=(self.__username, self.__password),
-                         headers=({'user-agent': self.user_agent(), 'Accept': 'application/json'})))
+                           auth=(self.__username, self.__password),
+                           data=http_data,
+                           headers=({'user-agent': self.user_agent(), 'Accept': 'application/json'})))
 
     def user_agent(self):
         """
@@ -125,12 +131,20 @@ class Api:
 
     def table_api_get(self, *paths, **kparams):
         """ helper to make GET /api/now/v1/table requests """
-        url = self.url_for_api("/api/now/v1/table", *paths, **kparams)
+        url = self.flattened_params_url("/api/now/v1/table", *paths, **kparams)
         rjson = self.req("get", url).text
         return json.loads(rjson)
 
-    def url_for_api(self, path_prefix, *paths, **kparams):
-        """ url builder helper to make /api/now/v1/table paths """
+    def table_api_put(self, *paths, **kparams):
+        """ helper to make PUT /api/now/v1/table requests """
+        url = self.flattened_params_url("/api/now/v1/table", *paths)
+
+        # json.dumps(kparams) is the body of the put/post
+        rjson = self.req("put", url, json.dumps(kparams)).text
+        return json.loads(rjson)
+
+    def flattened_params_url(self, path_prefix, *paths, **kparams):
+        """ url builder helper to make /api/now/v1/table paths for GET requests. Snow is Woe."""
 
         base = self.base_url + path_prefix
         for p in paths:
@@ -179,8 +193,6 @@ class Api:
 
         return linked
 
-
-
     # This catalog api is for form/requests etc. catalog api is the interface
     # Wherein folks make requests to modify various table items, take action, etc.
     # This does not fit into the regular flow of the table api.
@@ -199,32 +211,32 @@ class Api:
 
         # This method retrieves a list of catalogs to which the user has access.
         def catalogs(self, **kparams):
-            url = self.api.url_for_api("/api/sn_sc/v1/servicecatalog/catalogs", **kparams)
+            url = self.api.flattened_params_url("/api/sn_sc/v1/servicecatalog/catalogs", **kparams)
             return self.api.to_records(self.catalog_get(url), "SERVICECATALOG:catalog")
 
         # This method retrieves all the information about a requested catalog.
         def catalog(self, catalog_sys_id):
-            url = self.api.url_for_api("/api/sn_sc/v1/servicecatalog/catalogs/%s" % catalog_sys_id)
+            url = self.api.flattened_params_url("/api/sn_sc/v1/servicecatalog/catalogs/%s" % catalog_sys_id)
             return self.api.to_record(self.catalog_get(url), "SERVICECATALOG:catalog")
 
         # This method retrieves a list of categories for a catalog.
         def categories(self, catalog_sys_id, **kparams):
-            url = self.api.url_for_api("/api/sn_sc/servicecatalog/catalogs/%s/categories" % catalog_sys_id, **kparams)
+            url = self.api.flattened_params_url("/api/sn_sc/servicecatalog/catalogs/%s/categories" % catalog_sys_id, **kparams)
             return self.api.to_records(self.catalog_get(url), "SERVICECATALOG:category")
 
         # This method retrieves all the information about a requested category.
         def category(self, category_sys_id):
-            url = self.api.url_for_api("/api/sn_sc/servicecatalog/categories/%s" % category_sys_id)
+            url = self.api.flattened_params_url("/api/sn_sc/servicecatalog/categories/%s" % category_sys_id)
             return self.api.to_record(self.catalog_get(url), "SERVICECATALOG:category")
 
         # This method retrieves a list of catalogs and a list of items for each catalog.
         def items(self, **kparams):
-            url = self.api.url_for_api("/api/sn_sc/v1/servicecatalog/items", **kparams)
+            url = self.api.flattened_params_url("/api/sn_sc/v1/servicecatalog/items", **kparams)
             return self.api.to_records(self.catalog_get(url), "SERVICECATALOG:item")
 
         # This method retrieves the catalog item with the specified sys_id.
         def item(self, item_sys_id):
-            url = self.api.url_for_api("/api/sn_sc/v1/servicecatalog/items/%s" % item_sys_id)
+            url = self.api.flattened_params_url("/api/sn_sc/v1/servicecatalog/items/%s" % item_sys_id)
             return self.api.to_record(self.catalog_get(url), "SERVICECATALOG:item")
 
         ##### POST #####
