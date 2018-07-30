@@ -15,14 +15,14 @@ class TestApi(unittest.TestCase):
       self.catalog_api = self.api.catalog_api
       self._setup_mocking()
 
-  def test_url_for_api(self):
-    assert_equal (self.api.url_for_api("/api/now/v1/table", "foo", "bar", sys_action="insert", sys_limit=10),
+  def test_flattened_params_url(self):
+    assert_equal (self.api.flattened_params_url("/api/now/v1/table", "foo", "bar", sys_action="insert", sys_limit=10),
                    "https://booboo.service-now.com/api/now/v1/table/foo/bar?sys_action=insert&sys_limit=10")
 
   @responses.activate
-  def test_generic_request(self):
+  def test_get_request(self):
     """
-    generic requests that is just a proxy for "requests" module
+    get requests that is just a proxy for "requests" module
     but adds in the basic auth in real impl
     """
     responses.add(responses.GET, "http://foo.com/bar.json",
@@ -31,6 +31,17 @@ class TestApi(unittest.TestCase):
                   content_type='application/json')
     assert_equal(self.api.req("get", "http://foo.com/bar.json").json(), {u'1': 2})
 
+  @responses.activate
+  def test_put_request(self):
+    """
+    put requests that is just a proxy for "requests" module
+    but adds in the basic auth in real impl
+    """
+    responses.add(responses.PUT, "http://foo.com/bar.json",
+                  body= '{"1":2}',
+                  status=200,
+                  content_type='application/json')
+    assert_equal(self.api.req("put", "http://foo.com/bar.json").json(), {u'1': 2})
 
   def _setup_mocking(self):
     # https://docs.servicenow.com/bundle/istanbul-servicenow-platform/page/integrate/inbound-rest/concept/c_ServiceCatalogAPI.html
